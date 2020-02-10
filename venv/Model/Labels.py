@@ -11,5 +11,9 @@ class Label:
     def getLabel(self, position):
         return self.labels[position]
 
+
+    def getAllLabel(self):
+        return self.labels
+
     def deleteLabel(self, position):
         self.labels[position] = None

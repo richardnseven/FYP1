@@ -2,8 +2,8 @@ import PreferenceLists as P
 
 class Student:
     def __init__(self, id):
-        self.id = id
         self.pre = P.PreferenceList()
+        self.setStudentID(id)
         
         
     
@@ -16,13 +16,20 @@ class Student:
             print("typeError")
 
         print("the Id is ", self.studentID)
+
+
+    def getID(self):
+        return self.studentID
+
+
+
+
+
    
    
     def testMethod(self):
-        self.pre.setPreferenceList("abc")
+        self.pre.setPreferenceList("one","primary", "second", "type")
         self.pre.showname()
 
 
 
-st = Student(123)
-st.pre.testFun()
