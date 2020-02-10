@@ -8,8 +8,7 @@ class PreferenceList:
         print(self.testWord)
 
     def setPreferenceList(self, position, primary, second, type):
-        self.testWord = preference
+        label = L.Label()
 
 
-pl = L.Label()
-pl.setLabel("first", 0)
+

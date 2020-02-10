@@ -1,8 +1,12 @@
 import PreferenceList as P
 
 class Student:
-    testId = 1312
-    pre = P.PreferenceList()
+    def __init__(self, id):
+        self.id = id
+        pre = P.PreferenceList()
+        
+        
+    
 
     def setStudentID(self, id):
         try:
@@ -12,10 +16,11 @@ class Student:
             print("typeError")
 
         print("the Id is ", self.studentID)
+   
+   
     def testMethod(self):
         self.pre.setPreferenceList("abc")
         self.pre.showname()
 
 
-student = Student()
-student.testMethod()
+
