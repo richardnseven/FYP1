@@ -1,9 +1,9 @@
-import PreferenceList as P
+import PreferenceLists as P
 
 class Student:
     def __init__(self, id):
         self.id = id
-        pre = P.PreferenceList()
+        self.pre = P.PreferenceList()
         
         
     
@@ -24,3 +24,5 @@ class Student:
 
 
 
+st = Student(123)
+st.pre.testFun()

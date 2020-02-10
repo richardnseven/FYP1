@@ -1,8 +1,12 @@
 class Label:
-    labels = dict.fromkeys(("primary", "second", "type"))
+    def __init__(self):
+        self.labels = dict.fromkeys(("primary", "second", "type"))
 
-    def setLalel(self, label, position):
-        self.labels[position] = label
+    def setLabel(self, primary, second, type):
+        self.labels["primary"] = primary
+        self.labels["second"] = second
+        self.labels["type"] = type
+
 
     def getLabel(self, position):
         return self.labels[position]
