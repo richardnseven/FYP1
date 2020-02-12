@@ -1,6 +1,8 @@
 import PreferenceLists as P
 
 class Student:
+
+    #TODO add pre ass label, final ass label, final ass project
     def __init__(self, id):
         self.pre = P.PreferenceList()
         self.setStudentID(id)
