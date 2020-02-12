@@ -1,4 +1,5 @@
 import PreferenceLists as P
+import Labels as L
 
 class Student:
 
@@ -8,7 +9,10 @@ class Student:
         self.setStudentID(id)
         
         
-    
+    def setPreferenceList(self):
+        pass
+
+
 
     def setStudentID(self, id):
         try:

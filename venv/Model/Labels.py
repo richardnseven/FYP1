@@ -17,3 +17,9 @@ class Label:
 
     def deleteLabel(self, position):
         self.labels[position] = None
+
+    def labelIsEqual(self, label):
+        if self.labels["primary"] == label["primary"] & self.labels["second"] == label["second"] & self.labels["type"] == label["type"]:
+            return True
+        else:
+            return False

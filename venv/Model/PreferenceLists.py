@@ -11,7 +11,7 @@ class PreferenceList:
 
     def setPreferenceList(self, position, primary, second, type):
         label = L.Label()
-        label.setLabel("primary", "second", "type")
+        label.setLabel(primary, second, type)
 
         self.listOfPre[position] = label
 
