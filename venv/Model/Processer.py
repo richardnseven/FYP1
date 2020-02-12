@@ -1,34 +1,28 @@
 import Students as S
 import Projects as P
+import LabelCounters as coun
 
-studentList = []
-projectList = []
+studentDict = dict()
+projectDict = dict()
 
-def creatStudent():
+def creatStudent(id):
     "在这里创建学生，需要id"
-    student = S.Student(123)
+    student = S.Student(id)
+    studentDict[id] = student
 
-    studentList.append(student)
 
-def creatProject():
+
+def creatProject(id):
     "在这里创建项目，需要项目名和label"
-    project = P.Project("project", "primary", "second", "type")
-    projectList.append(project)
+    project = P.Project(id)
+    projectDict[id] = project
 
 def countLabel():
     "在这里对label计数"
-    primaryLabel = {"A": dict(), "B": 0}#对一级标签的计数
-    secondA = dict()
+    counter = coun.LabelCounter()
+    for project in projectDict.values():
+        pass
 
-    for p in projectList:
-        label = p.getLabel()
-        primary = label["primary"]
-        second = label["second"]
-        type = label["type"]
-
-
-        if primary == "A":
-            primaryLabel["A"] += 1
 
 
 

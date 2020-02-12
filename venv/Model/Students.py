@@ -9,8 +9,10 @@ class Student:
         self.setStudentID(id)
         
         
-    def setPreferenceList(self):
-        pass
+    def setPreference(self, position, primary = None, second = None, type = None):
+        "set preference by class P's function and the input can be none"
+        self.pre.setPreferenceList(position, primary, second, type)
+
 
 
 
