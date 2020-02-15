@@ -9,17 +9,20 @@ class LabelCounter:
         self.dicOfLabels[primary][second] = {"p":0, "t":0}
 
 
-    def addLabel(self, primary, second, type):
+    def addLabel(self, Label):
+        primary = Label["primary"]
+        second = Label["second"]
+        thetype = Label["type"]#tyep is origanil variable thus use thetpye to avoid confuse
         if primary in self.dicOfLabels:
             if second in self.dicOfLabels[primary]:
-                self.dicOfLabels[primary][second][type] += 1
+                self.dicOfLabels[primary][second][thetype] += 1
             else:
                 self.creatSecond(primary, second)
-                self.dicOfLabels[primary][second][type] += 1
+                self.dicOfLabels[primary][second][thetype] += 1
         else:
             self.creatPrimary(primary)
             self.creatSecond(primary, second)
-            self.dicOfLabels[primary][second][type] += 1
+            self.dicOfLabels[primary][second][thetype] += 1
 
     def counter(self, primary=None, second=None, type=None):
         "通过这个方法返回 某个特定标签的数量。 当second有值的时候 primary不能为空"
