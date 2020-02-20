@@ -54,7 +54,7 @@ def initalProject():#tested
         reader = csv.DictReader(csvfile)
         for row in reader:
             creatProject(row["id"],row["primary"],row["second"],row["type"], row["supervisorID"])
-            print(projectDict[row["id"]].getLabel())
+            #print(projectDict[row["id"]].getLabel())
 
 
 
@@ -64,10 +64,22 @@ def initalSupervisor():#tested
         reader = csv.DictReader(csvfile)
         for row in reader:
             creatSupervisor(row["ID"], row["name"])
-            print("the id is %s the name is %s"%(row["ID"],row["name"]))
+            #print("the id is %s the name is %s"%(row["ID"],row["name"]))
+
+def initalpreference():#tested
+    path_preference = os.path.join(path, "test_preference.csv")
+    with open(path_preference,encoding="utf-8-sig") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            for value in row:
+               if row[value] == "":
+                   row[value] = None
+            studentDict[row["id"]].setPreference(row["position"],row["primary"], row["second"], row["type"])
+            studentDict[row["id"]].getPreference()
 
 
-
-
+initalStudent()
 initalSupervisor()
 initalProject()
+initalpreference()
+

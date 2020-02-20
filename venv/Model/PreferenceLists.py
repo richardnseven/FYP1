@@ -7,9 +7,9 @@ class PreferenceList:
 
 
     def showname(self):
-        print(self.listOfPre)
+        print(self.listOfPre['one'].getAllLabel())
 
-    def setPreferenceList(self, position, primary, second, type):
+    def setPreferenceList(self, position, primary=None, second=None, type=None):
         label = L.Label()
         label.setLabel(primary, second, type)
 

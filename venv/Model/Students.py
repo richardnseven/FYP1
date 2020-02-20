@@ -23,7 +23,8 @@ class Student:
         except(TypeError):
             print("typeError")
 
-        print("the Id is ", self.studentID)
+    def getPreference(self):
+        return self.pre
 
 
     def getID(self):
