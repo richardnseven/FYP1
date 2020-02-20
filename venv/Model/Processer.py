@@ -48,12 +48,13 @@ def initalStudent():#tested
 
 
 
-def initalProject():
+def initalProject():#tested
     path_project = os.path.join(path,"test_project.csv")
     with open(path_project, encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             creatProject(row["id"],row["primary"],row["second"],row["type"], row["supervisorID"])
+            print(projectDict[row["id"]].getLabel())
 
 
 
@@ -68,3 +69,5 @@ def initalSupervisor():#tested
 
 
 
+initalSupervisor()
+initalProject()
