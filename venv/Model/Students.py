@@ -19,7 +19,7 @@ class Student:
     def setStudentID(self, id):
         try:
             int_id = int(id)
-            self.studentID = int_id
+            self.studentID = id
         except(TypeError):
             print("typeError")
 

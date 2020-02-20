@@ -1,11 +1,15 @@
 import Students as S
 import Projects as P
+import csv
+import os
 import Supervisors
 import LabelCounters as coun
 
 studentDict = dict()
 projectDict = dict()
 suprevisorDict = dict()
+PORJECT_ROOT = os.path.dirname(os.path.realpath(os.path.dirname(__file__)))
+path = os.path.join(PORJECT_ROOT, "docs\\")
 
 def creatStudent(id):
     "在这里创建学生，需要id"
@@ -14,11 +18,11 @@ def creatStudent(id):
 
 
 
-def creatProject(id, primary, second, type, suprevisorID):
+def creatProject(id, primary, second, type, supervisorID):
     "在这里创建项目，需要项目名和label"
     project = P.Project(id)
     project.setLabel(primary, second, type)
-    project.setSupervisor(suprevisorDict[suprevisorID])
+    project.setSupervisor(suprevisorDict[supervisorID])
     projectDict[id] = project
 
 def creatSupervisor(ID, name):
@@ -34,9 +38,33 @@ def countLabel():
         counter.addLabel(project.getLabel())
 
 
+def initalStudent():#tested
+    path_studnet = os.path.join(path,"test_student.csv")
+
+    with open(path_studnet, encoding="utf-8-sig") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            creatStudent(row["id"])
 
 
 
-creatProject(123,"primary" , "s", "t")
-print(projectDict[123].getLabel())
-print(projectDict[123])
+def initalProject():
+    path_project = os.path.join(path,"test_project.csv")
+    with open(path_project, encoding="utf-8-sig") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            creatProject(row["id"],row["primary"],row["second"],row["type"], row["supervisorID"])
+
+
+
+def initalSupervisor():#tested
+    path_supervisor = os.path.join(path, "test_supervisor.csv")
+    with open(path_supervisor, encoding="utf-8-sig") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            creatSupervisor(row["ID"], row["name"])
+            print("the id is %s the name is %s"%(row["ID"],row["name"]))
+
+
+
+
