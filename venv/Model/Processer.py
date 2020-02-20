@@ -31,7 +31,8 @@ def countLabel():
     "在这里对label计数"
     counter = coun.LabelCounter()
     for project in projectDict.values():
-        project.getLabel()
+        counter.addLabel(project.getLabel())
+
 
 
 
