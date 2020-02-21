@@ -24,43 +24,46 @@ class LabelCounter:
             self.creatSecond(primary, second)
             self.dicOfLabels[primary][second][thetype] += 1
 
-    def counter(self, primary=None, second=None, type=None):
+    def countLabel(self, label):
         "通过这个方法返回 某个特定标签的数量。 当second有值的时候 primary不能为空"
-
+        primary = label["primary"]
+        second = label["second"]
+        thetype = label["type"]
         #all of p,s,t has value
-        if primary is not None & second is not None & type is not None:
-            self.count = self.dicOfLabels[primary][second][type]
+        if (primary is not None) & (second is not None) & (thetype is not None):
+            self.count = self.dicOfLabels[primary][second][thetype]
             return self.count
 
 
         #both p and s has value, t == None
-        elif primary is not None & second is not None:
+        elif (primary is not None) & (second is not None):
             self.count = 0
             for value in self.dicOfLabels[primary][second].values():
                 self.count = self.count + value
             return self.count
 
         #both p and t has value, s == None
-        elif primary is not None & type is not None:
+        elif (primary is not None) & (thetype is not None):
             self.count = 0
-            for label in self.dicOfLabels[primary]:
-                self.count = self.count + label[type]
+            for thelabel in self.dicOfLabels[primary]:
+                self.count = self.count + thelabel[thetype]
             return self.count
 
         #only p has value, s == None and t == None
-        elif primary is not None:
+        elif (primary is not None):
             self.count = 0
-            for label in self.dicOfLabels[primary]:
-                for value in label.values():
+            primaryDict = self.dicOfLabels[primary]
+            for thesecondlabel in primaryDict:
+                for value in primaryDict[thesecondlabel].values():
                     self.count = self.count + value
             return  self.count
 
         #only t has value, p == None and s == None
-        elif type is not None:
+        elif (thetype is not None):
             self.count = 0
-            for label in self.dicOfLabels:
-                for secLabel in lebel:
-                    self.count = self.count + secLabel[type]
+            for thelabel in self.dicOfLabels:
+                for secLabel in thelebel:
+                    self.count = self.count + secLabel[thetype]
             return self.count
         else:
             print("counter function has an input error")

@@ -10,6 +10,7 @@ projectDict = dict()
 suprevisorDict = dict()
 PORJECT_ROOT = os.path.dirname(os.path.realpath(os.path.dirname(__file__)))
 path = os.path.join(PORJECT_ROOT, "docs\\")
+counter = coun.LabelCounter()
 
 def creatStudent(id):
     "在这里创建学生，需要id"
@@ -33,9 +34,10 @@ def creatSupervisor(ID, name):
 
 def countLabel():
     "在这里对label计数"
-    counter = coun.LabelCounter()
+
     for project in projectDict.values():
         counter.addLabel(project.getLabel())
+        #print(counter.dicOfLabels)
 
 
 def initalStudent():#tested
@@ -54,7 +56,7 @@ def initalProject():#tested
         reader = csv.DictReader(csvfile)
         for row in reader:
             creatProject(row["id"],row["primary"],row["second"],row["type"], row["supervisorID"])
-            #print(projectDict[row["id"]].getLabel())
+           # print(projectDict[row["id"]].getLabel())
 
 
 
@@ -75,11 +77,17 @@ def initalpreference():#tested
                if row[value] == "":
                    row[value] = None
             studentDict[row["id"]].setPreference(row["position"],row["primary"], row["second"], row["type"])
-            studentDict[row["id"]].getPreference()
+
+
+def preAllocation():
+    for student in studentDict.values():
+        thepre = student.getPreference()
+
 
 
 initalStudent()
 initalSupervisor()
 initalProject()
 initalpreference()
-
+countLabel()
+print(counter.countLabel({"primary":"A", "second":None, "type":None}))

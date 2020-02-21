@@ -9,7 +9,7 @@ class Project:
         self.label.setLabel(primary, second, type)
 
     def getLabel(self):
-        return self.label.getAllLabel()
+        return self.label.getLabel()
 
 
     def setSupervisor(self, supervisor):

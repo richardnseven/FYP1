@@ -8,8 +8,8 @@ class Label:
         self.labels["type"] = type
 
 
-    def getLabel(self, position):
-        return self.labels[position]
+    def getLabel(self, ):
+        return self.labels
 
 
     def getAllLabel(self):

@@ -15,6 +15,8 @@ class PreferenceList:
 
         self.listOfPre[position] = label
 
+    def getPreference(self,position):
+        return self.listOfPre[position]
     def testFun(self):
 
         self.setPreferenceList("one","primary","second","type")
