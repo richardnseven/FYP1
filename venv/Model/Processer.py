@@ -81,14 +81,23 @@ def initalpreference():#tested
 
 def preAllocation():
     for student in studentDict.values():
-        thepre = student.getPreference()
+        thepre = student.getPreference().getPreference()
+        for theLabel in thepre.values():
+            room = counter.countLabel(theLabel)
+            if room >= 0:
+                pass
 
 
 
-initalStudent()
+
+
 initalSupervisor()
 initalProject()
-initalpreference()
 countLabel()
-print(counter.countLabel({"primary":None, "second":None, "type":"p"}))
+initalStudent()
+initalpreference()#需要在countLabel后再载入
+
+
+testLabel = projectDict["0001"].getLabel()
+print(testLabel.isComplete())
 #tested P; T; P,S; P,T; P,S,T

@@ -8,12 +8,19 @@ class Label:
         self.labels["type"] = type
 
 
-    def getLabel(self, ):
+    def getLabel(self ):
         return self.labels
 
 
     def getAllLabel(self):
         return self.labels
+
+    def isComplete(self):
+        if (self.labels["primary"] is not None) & (self.labels["second"] is not None) & (self.labels["type"] is not None):
+            return True
+        else:
+            return False
+
 
     def deleteLabel(self, position):
         self.labels[position] = None
