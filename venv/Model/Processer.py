@@ -90,4 +90,5 @@ initalSupervisor()
 initalProject()
 initalpreference()
 countLabel()
-print(counter.countLabel({"primary":"A", "second":None, "type":None}))
+print(counter.countLabel({"primary":None, "second":None, "type":"p"}))
+#tested P; T; P,S; P,T; P,S,T

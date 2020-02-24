@@ -45,7 +45,7 @@ class LabelCounter:
         #both p and t has value, s == None
         elif (primary is not None) & (thetype is not None):
             self.count = 0
-            for thelabel in self.dicOfLabels[primary]:
+            for thelabel in self.dicOfLabels[primary].values():
                 self.count = self.count + thelabel[thetype]
             return self.count
 
@@ -61,8 +61,8 @@ class LabelCounter:
         #only t has value, p == None and s == None
         elif (thetype is not None):
             self.count = 0
-            for thelabel in self.dicOfLabels:
-                for secLabel in thelebel:
+            for thelabel in self.dicOfLabels.values():
+                for secLabel in thelabel.values():
                     self.count = self.count + secLabel[thetype]
             return self.count
         else:
