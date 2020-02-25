@@ -25,7 +25,8 @@ class Student:
 
     def getPreference(self):
         return self.pre
-
+    def setPreallocation(self,label):
+        self.preallocation = label
 
     def getID(self):
         return self.studentID

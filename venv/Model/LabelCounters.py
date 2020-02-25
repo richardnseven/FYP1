@@ -69,3 +69,42 @@ class LabelCounter:
             return self.count
         else:
             print("counter function has an input error")
+
+    def findMatch(self, label):
+        initNum = 0
+        theLabel
+        for primaryDict in self.dicOfLabels:
+            for secondDict in self.dicOfLabels[primaryDict]:
+                for typeDict in self.dicOfLabels[primaryDict][secondDict]:
+                    theNum = self.dicOfLabels[primaryDict][secondDict][typeDict]
+                    if (theNum > initNum) and self.isMatch(label, primaryDict,secondDict,typeDict):
+                        pass#赋值到theLabel然后继续迭代寻求最大值
+
+
+
+
+    def isMatch(self, Label, primary, second, type):
+        label = Label.getLabel()
+        state = False
+        state_p = False
+        state_s = False
+        state_t = False
+        if label["primary"] is None:
+            state_p = True
+        else:
+            if label["primary"] == primary:
+                state_p = True
+
+        if label["second"] is None:
+            state_s = True
+        else:
+            if label["second"] is None:
+                state_s = True
+
+        if label["tyep"] is None:
+            state_t = True
+        else:
+            if label["tyep"] == type:
+                state_t = True
+        state = state_t & state_p & state_s
+        return state

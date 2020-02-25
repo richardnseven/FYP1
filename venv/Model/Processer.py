@@ -83,9 +83,16 @@ def preAllocation():
     for student in studentDict.values():
         thepre = student.getPreference().getPreference()
         for theLabel in thepre.values():
-            room = counter.countLabel(theLabel)
-            if room >= 0:
-                pass
+            if theLabel is None:
+                print("the end of this student")
+                break
+            else:
+                room = counter.countLabel(theLabel)
+                if room > 0:
+                    if theLabel.isComplete():
+                        student.setPreallocation(theLabel)
+                    else:
+
 
 
 
