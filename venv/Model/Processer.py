@@ -79,6 +79,7 @@ def initalpreference():#tested
             studentDict[row["id"]].setPreference(row["position"],row["primary"], row["second"], row["type"])
 
 
+
 def preAllocation():
     for student in studentDict.values():
         thepre = student.getPreference().getPreference()
@@ -88,10 +89,15 @@ def preAllocation():
                 break
             else:
                 room = counter.countLabel(theLabel)
+
                 if room > 0:
                     if theLabel.isComplete():
                         student.setPreallocation(theLabel)
+                        print("the student" + str(student.getID()) + str(theLabel.getLabel()))
                     else:
+                        preLabel = counter.findMatch(theLabel)
+
+                        student.setPreallocation(preLabel)
 
 
 
@@ -103,8 +109,9 @@ initalProject()
 countLabel()
 initalStudent()
 initalpreference()#需要在countLabel后再载入
+preAllocation()
 
 
 testLabel = projectDict["0001"].getLabel()
-print(testLabel.isComplete())
+# print(testLabel.isComplete())
 #tested P; T; P,S; P,T; P,S,T

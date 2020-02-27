@@ -2,7 +2,7 @@ class Label:
     def __init__(self):
         self.labels = dict.fromkeys(("primary", "second", "type"))
 
-    def setLabel(self, primary, second, type):
+    def setLabel(self, primary = None, second = None, type = None):
         self.labels["primary"] = primary
         self.labels["second"] = second
         self.labels["type"] = type

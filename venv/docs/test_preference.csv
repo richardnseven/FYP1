@@ -1,5 +1,5 @@
 ﻿id,position,primary,second,type
-0001,one,A,aa,t
+0001,one,A,,t
 0002,one,A,aa,p
 0003,one,A,ab,t
 0004,one,A,ab,p

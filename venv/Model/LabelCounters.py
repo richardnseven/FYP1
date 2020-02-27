@@ -1,3 +1,5 @@
+import Labels as L
+
 class LabelCounter:
     def __init__(self):
         self.dicOfLabels = dict()
@@ -72,13 +74,19 @@ class LabelCounter:
 
     def findMatch(self, label):
         initNum = 0
-        theLabel
+        prelabel = L.Label()
         for primaryDict in self.dicOfLabels:
             for secondDict in self.dicOfLabels[primaryDict]:
                 for typeDict in self.dicOfLabels[primaryDict][secondDict]:
                     theNum = self.dicOfLabels[primaryDict][secondDict][typeDict]
                     if (theNum > initNum) and self.isMatch(label, primaryDict,secondDict,typeDict):
-                        pass#赋值到theLabel然后继续迭代寻求最大值
+                        initNum = theNum
+                        prelabel.setLabel(primaryDict,secondDict,typeDict)
+        print("the label" + str(prelabel.getLabel()) + "has allocated to the student")
+
+        return prelabel
+
+
 
 
 
@@ -101,10 +109,10 @@ class LabelCounter:
             if label["second"] is None:
                 state_s = True
 
-        if label["tyep"] is None:
+        if label["type"] is None:
             state_t = True
         else:
-            if label["tyep"] == type:
+            if label["type"] == type:
                 state_t = True
         state = state_t & state_p & state_s
         return state
