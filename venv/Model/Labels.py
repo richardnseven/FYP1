@@ -12,8 +12,7 @@ class Label:
         return self.labels
 
 
-    def getAllLabel(self):
-        return self.labels
+   
 
     def isComplete(self):
         if (self.labels["primary"] is not None) & (self.labels["second"] is not None) & (self.labels["type"] is not None):
