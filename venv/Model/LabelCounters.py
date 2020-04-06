@@ -27,6 +27,14 @@ class LabelCounter:
             self.creatSecond(primary, second)
             self.dicOfLabels[primary][second][thetype] += 1
 
+    def minusLabel(self, label):
+        Label = label.getLabel()
+        primary = Label["primary"]
+        second = Label["second"]
+        thetype = Label["type"]
+        self.dicOfLabels[primary][second][thetype] -= 1
+
+
     def countLabel(self, Label):#传入的是label的实例
         "通过这个方法返回 某个特定标签的数量。 当second有值的时候 primary不能为空"
         label = Label.getLabel()
@@ -82,7 +90,7 @@ class LabelCounter:
                     if (theNum > initNum) and self.isMatch(label, primaryDict,secondDict,typeDict):
                         initNum = theNum
                         prelabel.setLabel(primaryDict,secondDict,typeDict)
-        print("the label" + str(prelabel.getLabel()) + "has allocated to the student")
+
 
         return prelabel
 

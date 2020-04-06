@@ -13,18 +13,6 @@ PORJECT_ROOT = os.path.dirname(os.path.realpath(os.path.dirname(__file__)))
 path = os.path.join(PORJECT_ROOT, "docs\\")
 
 
-
-
-
-
-
-def creatProject(id, primary, second, type, supervisorID, suprevisorDict):
-    "在这里创建项目，需要项目名和label"
-
-
-
-
-
 def countLabel(projectDict):
     "在这里对label计数"
     counter = coun.LabelCounter()
@@ -73,7 +61,7 @@ def initalSupervisor():#tested
             #print("the id is %s the name is %s"%(row["ID"],row["name"]))
     return supervisorDict
 
-def initalpreference(studentDict):#tested
+def initalpreference(studentDict, counter):#tested
     path_preference = os.path.join(path, "test_preference.csv")
     with open(path_preference,encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
@@ -82,27 +70,54 @@ def initalpreference(studentDict):#tested
                if row[value] == "":
                    row[value] = None
             studentDict[row["id"]].setPreference(row["position"],row["primary"], row["second"], row["type"])
+            preAllocation(studentDict[row['id']], counter)
 
 
 
-def preAllocation():
+
+def preAllocation(student, counter):
+
+    thepre = student.getPreference().getPreference()
+    position = 0
+    for theLabel in thepre.values():
+        position += 1
+        status = False
+        if theLabel is None or status:
+            break
+        else:
+            room = counter.countLabel(theLabel)
+
+            if room > 0:
+                if theLabel.isComplete():
+                    student.setPreallocation(theLabel)
+                    student.setPrePosition(position)
+                    counter.minusLabel(theLabel)
+                    # print("the student" + str(student.getID()) + str(theLabel.getLabel()))
+                else:
+                    preLabel = counter.findMatch(theLabel)
+                    # print("the student" + str(student.getID()) + str(preLabel.getLabel()))
+
+                    student.setPreallocation(preLabel)
+                    student.setPrePosition(position)
+                    counter.minusLabel(preLabel)
+
+
+def reAllocation(studentDict: dict, counter):
     for student in studentDict.values():
-        thepre = student.getPreference().getPreference()
-        for theLabel in thepre.values():
-            if theLabel is None:
-                print("the end of this student")
-                break
-            else:
-                room = counter.countLabel(theLabel)
+        position = student.getPrePosition()
+        label = student.getPreferenceWithPosition(position)
+        print(label.getLabel())
+        print(student.getPreAllocation().getLabel())
+        if position >= 3:
+            preLabel = studnet.getPreAllocation().getLabel()
+            counter.addLabel(preLabel) #add the pre back to avilible list
+            for backup in studentDict.values():
+                #对所有 preallocation 满足1,2preference的找新坑， 如果找计算结果值， 求得最大结果值
+                #执行更新时 更新所有preallocation position
+                pass
 
-                if room > 0:
-                    if theLabel.isComplete():
-                        student.setPreallocation(theLabel)
-                        print("the student" + str(student.getID()) + str(theLabel.getLabel()))
-                    else:
-                        preLabel = counter.findMatch(theLabel)
 
-                        student.setPreallocation(preLabel)
+
 
 
 
@@ -115,7 +130,9 @@ if __name__ == "__main__":
     testLabel = L.Label()
     testLabel.setLabel(primary="A", second = 'aa')
 
-    initalpreference(student)#需要在countLabel后再载入
+    initalpreference(student, counter)#需要在countLabel后再载入
+    reAllocation(student, counter)
+
     #
     #
     #
