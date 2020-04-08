@@ -105,16 +105,73 @@ def preAllocation(student, counter):
 def reAllocation(studentDict: dict, counter):
     for student in studentDict.values():
         position = student.getPrePosition()
-        label = student.getPreferenceWithPosition(position)
-        print(label.getLabel())
-        print(student.getPreAllocation().getLabel())
         if position >= 3:
             preLabel = studnet.getPreAllocation().getLabel()
             counter.addLabel(preLabel) #add the pre back to avilible list
-            for backup in studentDict.values():
+            resultBackupStudent = None
+            resultBackupPosition = None
+            resultBackupLabel = None
+            for backup in studentDict.values():#寻找backupstudent
                 #对所有 preallocation 满足1,2preference的找新坑， 如果找计算结果值， 求得最大结果值
                 #执行更新时 更新所有preallocation position
+                if backup == student:
+                    break
+                prealo = backup.getPreAllocation()
+                backupPostion = backup.getPrePosition()
+                backupNewPositon = int()
+                result = 0
+                for i in range(1, position):
+                    if isMatch(student.getPreferenceWithPosition(i), prealo):
+                        for n in range(backupPostion, position):
+                            backupLabel = counter.findMatch(backup.getPreferenceWithPosition(i))
+                            if backupLabel.getLabel()["type"] == None:#backup是否找到新位置
+                                break
+                            else:
+                                backupNewPositon = n
+                                res = position-i - (backupNewPositon-backupPostion)
+                                #前进量减退后量
+                                if res > result:
+                                    result = res
+                                    backupStudent = backup
+                                    backupPosition = n
+                                    resultBackupLabel = backupLabel
+
+            if backupStudent is not None:#执行替换
                 pass
+            else:
+                counter.minusLabel(preLabel)#替换不成功时，取消释放
+
+
+                            
+
+
+def isMatch(Label, complabel):
+    label = Label.getLabel()
+    complabel = complabel.getLabel()
+    state = False
+    state_p = False
+    state_s = False
+    state_t = False
+    if label["primary"] is None:
+        state_p = True
+    else:
+        if label["primary"] == complabel['primary']:
+            state_p = True
+
+    if label["second"] is None:
+        state_s = True
+    else:
+        if label["second"] is complabel['second']:
+            state_s = True
+
+    if label["type"] is None:
+        state_t = True
+    else:
+        if label["type"] == complabel['type']:
+            state_t = True
+    state = state_t & state_p & state_s
+    return state
+
 
 
 
@@ -128,10 +185,14 @@ if __name__ == "__main__":
     project = initalProject(supervisor)
     counter = countLabel(project)
     testLabel = L.Label()
+
     testLabel.setLabel(primary="A", second = 'aa')
 
+
+
     initalpreference(student, counter)#需要在countLabel后再载入
-    reAllocation(student, counter)
+
+    # reAllocation(student, counter)
 
     #
     #

@@ -114,7 +114,7 @@ class LabelCounter:
         if label["second"] is None:
             state_s = True
         else:
-            if label["second"] is None:
+            if label["second"] == second:
                 state_s = True
 
         if label["type"] is None:

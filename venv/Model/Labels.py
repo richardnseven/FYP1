@@ -1,6 +1,6 @@
 class Label:
     def __init__(self):
-        self.labels = dict.fromkeys(("primary", "second", "type"))
+        self.labels = {"primary": None, "second": None, "type": None}
 
     def setLabel(self, primary = None, second = None, type = None):
         self.labels["primary"] = primary
