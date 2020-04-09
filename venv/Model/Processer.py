@@ -111,33 +111,48 @@ def reAllocation(studentDict: dict, counter):
             resultBackupStudent = None
             resultBackupPosition = None
             resultBackupLabel = None
+            resultPosition = None
+            resultbackup = None
             for backup in studentDict.values():#寻找backupstudent
                 #对所有 preallocation 满足1,2preference的找新坑， 如果找计算结果值， 求得最大结果值
                 #执行更新时 更新所有preallocation position
                 if backup == student:
-                    break
+                    continue
                 prealo = backup.getPreAllocation()
                 backupPostion = backup.getPrePosition()
                 backupNewPositon = int()
                 result = 0
+                if position <= backupPostion:
+                    continue
                 for i in range(1, position):
                     if isMatch(student.getPreferenceWithPosition(i), prealo):
                         for n in range(backupPostion, position):
-                            backupLabel = counter.findMatch(backup.getPreferenceWithPosition(i))
+                            backupLabel = counter.findMatch(backup.getPreferenceWithPosition(n))
                             if backupLabel.getLabel()["type"] == None:#backup是否找到新位置
-                                break
+                                continue
                             else:
                                 backupNewPositon = n
                                 res = position-i - (backupNewPositon-backupPostion)
                                 #前进量减退后量
                                 if res > result:
                                     result = res
-                                    backupStudent = backup
-                                    backupPosition = n
+                                    resultBackupStudent = backup
+                                    resultBackupPosition = n
+                                    resultPosition = i
                                     resultBackupLabel = backupLabel
+                                    resultbackup = prealo
 
-            if backupStudent is not None:#执行替换
-                pass
+
+            if resultBackupStudent is not None:#执行替换
+                resultBackupStudent.setPrePosition(resultBackupPosition)
+
+                resultBackupStudent.setPreallocation(resultBackupLabel)
+
+                counter.minusLabel(resultBackupLabel)
+                student.setPrePosition(resultPosition)
+                student.setPreallocation(resultbackup)
+
+
             else:
                 counter.minusLabel(preLabel)#替换不成功时，取消释放
 
