@@ -43,11 +43,47 @@ def initalProject(suprevisorDict):#tested
             project = P.Project(row['id'])
             project.setLabel(row["primary"], row["second"], row["type"])
             project.setSupervisor(suprevisorDict[row["supervisorID"]])
+            suprevisorDict[row["supervisorID"]].addProjectToAvi(project)
             projectDict[row['id']] = project
 
     return projectDict
 
+def creatprojectDict(projectDict):
+    dic = dict()
+    for project in projectDict.values():
+        label = project.getLabel().getLabel()
+        primary = label['primary']
+        second = label['second']
+        thetype = label['type']
+        supervisor = project.getSupervisor()
+        if primary in dic:
+            if second in dic[primary]:
+                if thetype in dic[primary][second]:
+                    if supervisor in dicdic[primary][second][thetype]:
+                        dicdic[primary][second][thetype][supervisor] += 1
+                    else:
+                        dicdic[primary][second][thetype][supervisor] = 1
+                else:
+                    sup = {supervisor: 1}
+                    dic[primary][second][thetype] = sup
 
+            else:
+                sup = {supervisor: 1}
+                ty = {thetype: sup}
+                dic[primary][second] = ty
+        else:
+            sup = {supervisor: 1}
+            ty = {thetype: sup}
+            se = {second: ty}
+            dic[primary] = se
+
+
+
+
+
+
+
+    return dic
 
 def initalSupervisor():#tested
     path_supervisor = os.path.join(path, "test_supervisor.csv")
@@ -156,8 +192,39 @@ def reAllocation(studentDict: dict, counter):
             else:
                 counter.minusLabel(preLabel)#替换不成功时，取消释放
 
+def finalCheck(studentDict):
+    result = True
+    for student in studentDict:
+        if(student.getPreAllocation().isisComplete()):
+            continue
+        else:
+            result = False
+    return result
 
-                            
+def projectAllocation(studentDcit: dict, dic: dict):
+    'TODO 将项目分配给学生，根据workload'
+    for student in studentDcit.valuse():
+        theSupervisor = None
+        label = student.getPreAllocation()
+        labelDict = label.getLabel()
+        theDict = dic[labelDict['primary']][labelDict['second']][labelDict['type']]
+        max = float('inf')
+        for sup, value in theDict.items():
+            if value > 0:
+                if sup.getWorkLoad() < max:
+                    max = sup.getWorkLoad()
+                    theSupervisor = sup
+
+
+        theProject = theSupervisor.finProjedt()
+        student.setProject(theProject)
+
+
+
+def finalScore(studentDict, supervisorDict):
+    'TODO 计算最终得分'
+    pass
+                             
 
 
 def isMatch(Label, complabel):
@@ -202,18 +269,18 @@ if __name__ == "__main__":
     testLabel = L.Label()
 
     testLabel.setLabel(primary="A", second = 'aa')
+    dic = creatprojectDict(project)
+    print(dic)
 
 
-
-    initalpreference(student, counter)#需要在countLabel后再载入
+    # initalpreference(student, counter)#需要在countLabel后再载入
 
     # reAllocation(student, counter)
 
     #
     #
     #
-    #
-    # preAllocation()
+
     
     
    # testLabel = projectDict["0001"].getLabel()

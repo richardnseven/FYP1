@@ -1,5 +1,7 @@
 import Labels as L
 import Supervisors
+
+
 class Project:
     def __init__(self, projectID):
         self.ID = projectID
@@ -14,3 +16,6 @@ class Project:
 
     def setSupervisor(self, supervisor):
         self.supervisor = supervisor
+
+    def getSupervisor(self):
+        return self.supervisor
