@@ -5,7 +5,7 @@ import csv
 import os
 import Supervisors
 import LabelCounters as coun
-
+import numpy as np
 
 projectDict = dict()
 
@@ -21,8 +21,9 @@ def countLabel(projectDict):
         # print(counter.dicOfLabels)
     return counter
 
-def initalStudent():#tested
-    path_studnet = os.path.join(path,"test_student.csv")
+
+def initalStudent():  # tested
+    path_studnet = os.path.join(path, "test_student.csv")
     studentDict = dict()
 
     with open(path_studnet, encoding="utf-8-sig") as csvfile:
@@ -34,8 +35,8 @@ def initalStudent():#tested
     return studentDict
 
 
-def initalProject(suprevisorDict):#tested
-    path_project = os.path.join(path,"test_project.csv")
+def initalProject(suprevisorDict):  # tested
+    path_project = os.path.join(path, "test_project.csv")
     projectDict = dict()
     with open(path_project, encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
@@ -47,6 +48,7 @@ def initalProject(suprevisorDict):#tested
             projectDict[row['id']] = project
 
     return projectDict
+
 
 def creatprojectDict(projectDict):
     dic = dict()
@@ -77,15 +79,10 @@ def creatprojectDict(projectDict):
             se = {second: ty}
             dic[primary] = se
 
-
-
-
-
-
-
     return dic
 
-def initalSupervisor():#tested
+
+def initalSupervisor():  # tested
     path_supervisor = os.path.join(path, "test_supervisor.csv")
     supervisorDict = dict()
     with open(path_supervisor, encoding="utf-8-sig") as csvfile:
@@ -94,25 +91,23 @@ def initalSupervisor():#tested
             supervisor = Supervisors.Supervisor(row["ID"], row["name"])
             supervisorDict[row["ID"]] = supervisor
 
-            #print("the id is %s the name is %s"%(row["ID"],row["name"]))
+            # print("the id is %s the name is %s"%(row["ID"],row["name"]))
     return supervisorDict
 
-def initalpreference(studentDict, counter):#tested
+
+def initalpreference(studentDict, counter):  # tested
     path_preference = os.path.join(path, "test_preference.csv")
-    with open(path_preference,encoding="utf-8-sig") as csvfile:
+    with open(path_preference, encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             for value in row:
-               if row[value] == "":
-                   row[value] = None
-            studentDict[row["id"]].setPreference(row["position"],row["primary"], row["second"], row["type"])
+                if row[value] == "":
+                    row[value] = None
+            studentDict[row["id"]].setPreference(row["position"], row["primary"], row["second"], row["type"])
             preAllocation(studentDict[row['id']], counter)
 
 
-
-
 def preAllocation(student, counter):
-
     thepre = student.getPreference().getPreference()
     position = 0
     for theLabel in thepre.values():
@@ -143,15 +138,15 @@ def reAllocation(studentDict: dict, counter):
         position = student.getPrePosition()
         if position >= 3:
             preLabel = studnet.getPreAllocation().getLabel()
-            counter.addLabel(preLabel) #add the pre back to avilible list
+            counter.addLabel(preLabel)  # add the pre back to avilible list
             resultBackupStudent = None
             resultBackupPosition = None
             resultBackupLabel = None
             resultPosition = None
             resultbackup = None
-            for backup in studentDict.values():#寻找backupstudent
-                #对所有 preallocation 满足1,2preference的找新坑， 如果找计算结果值， 求得最大结果值
-                #执行更新时 更新所有preallocation position
+            for backup in studentDict.values():  # 寻找backupstudent
+                # 对所有 preallocation 满足1,2preference的找新坑， 如果找计算结果值， 求得最大结果值
+                # 执行更新时 更新所有preallocation position
                 if backup == student:
                     continue
                 prealo = backup.getPreAllocation()
@@ -164,12 +159,12 @@ def reAllocation(studentDict: dict, counter):
                     if isMatch(student.getPreferenceWithPosition(i), prealo):
                         for n in range(backupPostion, position):
                             backupLabel = counter.findMatch(backup.getPreferenceWithPosition(n))
-                            if backupLabel.getLabel()["type"] == None:#backup是否找到新位置
+                            if backupLabel.getLabel()["type"] is None:  # backup是否找到新位置
                                 continue
                             else:
                                 backupNewPositon = n
-                                res = position-i - (backupNewPositon-backupPostion)
-                                #前进量减退后量
+                                res = position - i - (backupNewPositon - backupPostion)
+                                # 前进量减退后量
                                 if res > result:
                                     result = res
                                     resultBackupStudent = backup
@@ -178,8 +173,7 @@ def reAllocation(studentDict: dict, counter):
                                     resultBackupLabel = backupLabel
                                     resultbackup = prealo
 
-
-            if resultBackupStudent is not None:#执行替换
+            if resultBackupStudent is not None:  # 执行替换
                 resultBackupStudent.setPrePosition(resultBackupPosition)
 
                 resultBackupStudent.setPreallocation(resultBackupLabel)
@@ -190,16 +184,18 @@ def reAllocation(studentDict: dict, counter):
 
 
             else:
-                counter.minusLabel(preLabel)#替换不成功时，取消释放
+                counter.minusLabel(preLabel)  # 替换不成功时，取消释放
+
 
 def finalCheck(studentDict):
     result = True
     for student in studentDict:
-        if(student.getPreAllocation().isisComplete()):
+        if (student.getPreAllocation().isisComplete()):
             continue
         else:
             result = False
     return result
+
 
 def projectAllocation(studentDcit: dict, dic: dict):
     'TODO 将项目分配给学生，根据workload'
@@ -215,22 +211,33 @@ def projectAllocation(studentDcit: dict, dic: dict):
                     max = sup.getWorkLoad()
                     theSupervisor = sup
 
-
         theProject = theSupervisor.finProjedt()
         student.setProject(theProject)
 
 
-
 def finalScore(studentDict, supervisorDict):
     'TODO 计算最终得分'
-    pass
-                             
+    studentscorelist = []
+    supervisorscorelist = []
+    for student in studentDict:
+        studentscorelist.append(student.getScore())
+    for supervisor in supervisorDict:
+        supervisorscorelist.append(supervisor.getWorkLoad())
+    studentsocrearray = np.array(studentscorelist)
+    supervisorscorearray = np.array(supervisorscorelist)
+
+    themean = np.mean(studentsocrearray)
+    studentVar = np.var(studentsocrearray)
+    supervisorVar = np.var(supervisorscorearray)
+
+
+
+
 
 
 def isMatch(Label, complabel):
     label = Label.getLabel()
     complabel = complabel.getLabel()
-    state = False
     state_p = False
     state_s = False
     state_t = False
@@ -255,12 +262,6 @@ def isMatch(Label, complabel):
     return state
 
 
-
-
-
-
-
-
 if __name__ == "__main__":
     supervisor = initalSupervisor()
     student = initalStudent()
@@ -268,10 +269,9 @@ if __name__ == "__main__":
     counter = countLabel(project)
     testLabel = L.Label()
 
-    testLabel.setLabel(primary="A", second = 'aa')
+    testLabel.setLabel(primary="A", second='aa')
     dic = creatprojectDict(project)
     print(dic)
-
 
     # initalpreference(student, counter)#需要在countLabel后再载入
 
@@ -281,8 +281,6 @@ if __name__ == "__main__":
     #
     #
 
-    
-    
-   # testLabel = projectDict["0001"].getLabel()
-    # print(testLabel.isComplete())
-    #tested P; T; P,S; P,T; P,S,T
+# testLabel = projectDict["0001"].getLabel()
+# print(testLabel.isComplete())
+# tested P; T; P,S; P,T; P,S,T

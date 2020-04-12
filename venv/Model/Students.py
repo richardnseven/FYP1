@@ -53,6 +53,10 @@ class Student:
     def getPrePosition(self):
         return self.prePosition
 
+    def getScore(self):
+        menu = {1: 10, 2: 8, 3: 6, 4: 4, 5: 2}
+        return menu[self.prePosition]
+
 
 
 
