@@ -117,16 +117,17 @@ def preAllocation(student, counter):
             break
         else:
             room = counter.countLabel(theLabel)
+            print(room)
 
             if room > 0:
                 if theLabel.isComplete():
                     student.setPreallocation(theLabel)
                     student.setPrePosition(position)
                     counter.minusLabel(theLabel)
-                    # print("the student" + str(student.getID()) + str(theLabel.getLabel()))
+                    print("the student" + str(student.getID()) + str(theLabel.getLabel()))
                 else:
                     preLabel = counter.findMatch(theLabel)
-                    # print("the student" + str(student.getID()) + str(preLabel.getLabel()))
+                    print("the student" + str(student.getID()) + str(preLabel.getLabel()) + str(position))
 
                     student.setPreallocation(preLabel)
                     student.setPrePosition(position)
@@ -136,7 +137,7 @@ def preAllocation(student, counter):
 def reAllocation(studentDict: dict, counter):
     for student in studentDict.values():
         position = student.getPrePosition()
-        if position >= 3:
+        if (position >= 3):
             preLabel = studnet.getPreAllocation().getLabel()
             counter.addLabel(preLabel)  # add the pre back to avilible list
             resultBackupStudent = None
@@ -157,7 +158,7 @@ def reAllocation(studentDict: dict, counter):
                     continue
                 for i in range(1, position):
                     if isMatch(student.getPreferenceWithPosition(i), prealo):
-                        for n in range(backupPostion, position):
+                        for n in range(1, position):
                             backupLabel = counter.findMatch(backup.getPreferenceWithPosition(n))
                             if backupLabel.getLabel()["type"] is None:  # backup是否找到新位置
                                 continue
@@ -189,8 +190,9 @@ def reAllocation(studentDict: dict, counter):
 
 def finalCheck(studentDict):
     result = True
-    for student in studentDict:
-        if (student.getPreAllocation().isisComplete()):
+    for student in studentDict.values():
+        if student.getPreAllocation().isComplete():
+            print(student.getPreAllocation().getLabel())
             continue
         else:
             result = False
@@ -199,7 +201,7 @@ def finalCheck(studentDict):
 
 def projectAllocation(studentDcit: dict, dic: dict):
     'TODO 将项目分配给学生，根据workload'
-    for student in studentDcit.valuse():
+    for student in studentDcit.values():
         theSupervisor = None
         label = student.getPreAllocation()
         labelDict = label.getLabel()
@@ -211,7 +213,7 @@ def projectAllocation(studentDcit: dict, dic: dict):
                     max = sup.getWorkLoad()
                     theSupervisor = sup
 
-        theProject = theSupervisor.finProjedt()
+        theProject = theSupervisor.findProject(label)
         student.setProject(theProject)
 
 
@@ -219,9 +221,9 @@ def finalScore(studentDict, supervisorDict):
     'TODO 计算最终得分'
     studentscorelist = []
     supervisorscorelist = []
-    for student in studentDict:
+    for student in studentDict.values():
         studentscorelist.append(student.getScore())
-    for supervisor in supervisorDict:
+    for supervisor in supervisorDict.values():
         supervisorscorelist.append(supervisor.getWorkLoad())
     studentsocrearray = np.array(studentscorelist)
     supervisorscorearray = np.array(supervisorscorelist)
@@ -229,6 +231,9 @@ def finalScore(studentDict, supervisorDict):
     themean = np.mean(studentsocrearray)
     studentVar = np.var(studentsocrearray)
     supervisorVar = np.var(supervisorscorearray)
+    print(themean)
+    print(studentVar)
+    print(supervisorVar)
 
 
 
@@ -271,15 +276,16 @@ if __name__ == "__main__":
 
     testLabel.setLabel(primary="A", second='aa')
     dic = creatprojectDict(project)
-    print(dic)
+    initalpreference(student, counter)  # 需要在countLabel后再载入
+    reAllocation(student, counter)
+    projectAllocation(student, dic)
+    print(finalCheck(student))
+    finalScore(student,supervisor)
 
-    # initalpreference(student, counter)#需要在countLabel后再载入
 
-    # reAllocation(student, counter)
 
-    #
-    #
-    #
+
+
 
 # testLabel = projectDict["0001"].getLabel()
 # print(testLabel.isComplete())

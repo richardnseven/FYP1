@@ -13,6 +13,7 @@ class Supervisor:
 
     def findProject(self, label):
         for project in self.aviprojectlist:
+            label = label.getLabel()
             if project.getLabel().labelIsEqual(label):
                 self.aviprojectlist.remove(project)
                 self.workload += 1

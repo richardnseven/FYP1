@@ -7,6 +7,7 @@ class Student:
     def __init__(self, id):
         self.pre = P.PreferenceList()
         self.setStudentID(id)
+        self.prePosition = None
 
         
         
