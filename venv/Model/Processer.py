@@ -22,8 +22,8 @@ def countLabel(projectDict):
     return counter
 
 
-def initalStudent():  # tested
-    path_studnet = os.path.join(path, "test_student.csv")
+def initalStudent(doc):  # tested
+    path_studnet = os.path.join(path, doc)
     studentDict = dict()
 
     with open(path_studnet, encoding="utf-8-sig") as csvfile:
@@ -35,8 +35,8 @@ def initalStudent():  # tested
     return studentDict
 
 
-def initalProject(suprevisorDict):  # tested
-    path_project = os.path.join(path, "test_project.csv")
+def initalProject(suprevisorDict, doc):  # tested
+    path_project = os.path.join(path, doc)
     projectDict = dict()
     with open(path_project, encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
@@ -61,10 +61,10 @@ def creatprojectDict(projectDict):
         if primary in dic:
             if second in dic[primary]:
                 if thetype in dic[primary][second]:
-                    if supervisor in dicdic[primary][second][thetype]:
-                        dicdic[primary][second][thetype][supervisor] += 1
+                    if supervisor in dic[primary][second][thetype]:
+                        dic[primary][second][thetype][supervisor] += 1
                     else:
-                        dicdic[primary][second][thetype][supervisor] = 1
+                        dic[primary][second][thetype][supervisor] = 1
                 else:
                     sup = {supervisor: 1}
                     dic[primary][second][thetype] = sup
@@ -82,8 +82,8 @@ def creatprojectDict(projectDict):
     return dic
 
 
-def initalSupervisor():  # tested
-    path_supervisor = os.path.join(path, "test_supervisor.csv")
+def initalSupervisor(doc):  # tested
+    path_supervisor = os.path.join(path, doc)
     supervisorDict = dict()
     with open(path_supervisor, encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
@@ -95,8 +95,8 @@ def initalSupervisor():  # tested
     return supervisorDict
 
 
-def initalpreference(studentDict, counter):  # tested
-    path_preference = os.path.join(path, "test_preference.csv")
+def initalpreference(studentDict, counter, doc):  # tested
+    path_preference = os.path.join(path, doc)
     with open(path_preference, encoding="utf-8-sig") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -236,8 +236,31 @@ def finalScore(studentDict, supervisorDict):
     print(supervisorVar)
 
 
+def writeProjectAna(counter):
+    path_ana_porject = os.path.join(path, "ana_project.txt")
+    with open(path_ana_porject, "w") as file:
+        dic = counter.dicOfLabels
+        pndic = {}
+        pdic = {}
+        file.write("This file is analysis of project.\n")
+        for x in dic:
+            primary = x
+            for y in dic[x]:
+                second = y
+                for z in dic[x][y]:
+                    theTpye = z
+                    num = str(dic[x][y][z])
+                    file.write("Primary: %s, Second: %s, Type: %s has total %s\n" %(primary,second,theTpye,num))
 
-
+        for p in dic:
+            file.write("The %s has sublabel: " % p)
+            for s in dic[p]:
+                n = 0
+                for t in dic[p][s]:
+                    n += dic[p][s][t]
+                file.write("%s : %d  "% (s, n))
+            file.write("\n")
+        file.write("----------------------------------------------------------------------------------")
 
 
 def isMatch(Label, complabel):
@@ -268,25 +291,27 @@ def isMatch(Label, complabel):
 
 
 if __name__ == "__main__":
-    supervisor = initalSupervisor()
-    student = initalStudent()
-    project = initalProject(supervisor)
+    student = initalStudent("demo_student.csv")
+    supervisor = initalSupervisor("demo_supervisor.csv")
+    project = initalProject(supervisor, "demo_project.csv")
     counter = countLabel(project)
-    testLabel = L.Label()
-
-    testLabel.setLabel(primary="A", second='aa')
+    writeProjectAna(counter)
+    initalpreference(student, counter, 'demo_preference.csv')
     dic = creatprojectDict(project)
-    initalpreference(student, counter)  # 需要在countLabel后再载入
     reAllocation(student, counter)
     projectAllocation(student, dic)
     print(finalCheck(student))
-    finalScore(student,supervisor)
+    finalScore(student, supervisor)
 
 
 
 
 
 
-# testLabel = projectDict["0001"].getLabel()
-# print(testLabel.isComplete())
-# tested P; T; P,S; P,T; P,S,T
+
+
+
+
+
+
+
