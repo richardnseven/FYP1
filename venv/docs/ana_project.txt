@@ -1,0 +1,33 @@
+This file is analysis of project.
+Primary: A, Second: aa, Type: p has total 5
+Primary: A, Second: aa, Type: t has total 5
+Primary: A, Second: ab, Type: p has total 5
+Primary: A, Second: ab, Type: t has total 5
+Primary: A, Second: ac, Type: p has total 5
+Primary: A, Second: ac, Type: t has total 5
+Primary: A, Second: ad, Type: p has total 5
+Primary: A, Second: ad, Type: t has total 5
+Primary: B, Second: ba, Type: p has total 5
+Primary: B, Second: ba, Type: t has total 5
+Primary: B, Second: bb, Type: p has total 5
+Primary: B, Second: bb, Type: t has total 5
+Primary: B, Second: bc, Type: p has total 5
+Primary: B, Second: bc, Type: t has total 5
+Primary: B, Second: bd, Type: p has total 5
+Primary: B, Second: bd, Type: t has total 5
+Primary: B, Second: be, Type: p has total 5
+Primary: B, Second: be, Type: t has total 5
+Primary: C, Second: ca, Type: p has total 5
+Primary: C, Second: ca, Type: t has total 5
+Primary: C, Second: cb, Type: p has total 5
+Primary: C, Second: cb, Type: t has total 5
+Primary: C, Second: cc, Type: p has total 5
+Primary: C, Second: cc, Type: t has total 5
+Primary: C, Second: cd, Type: p has total 5
+Primary: C, Second: cd, Type: t has total 5
+Primary: C, Second: ce, Type: p has total 5
+Primary: C, Second: ce, Type: t has total 5
+The A has sublabel: aa : 10  ab : 10  ac : 10  ad : 10  
+The B has sublabel: ba : 10  bb : 10  bc : 10  bd : 10  be : 10  
+The C has sublabel: ca : 10  cb : 10  cc : 10  cd : 10  ce : 10  
+----------------------------------------------------------------------------------
