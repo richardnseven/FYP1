@@ -110,14 +110,16 @@ def initalpreference(studentDict, counter, doc):  # tested
 def preAllocation(student, counter):
     thepre = student.getPreference().getPreference()
     position = 0
+
     for theLabel in thepre.values():
+        if student.getPreAllocation() != None:
+            break
         position += 1
         status = False
         if theLabel is None or status:
             break
         else:
             room = counter.countLabel(theLabel)
-            print(room)
 
             if room > 0:
                 if theLabel.isComplete():
@@ -138,7 +140,7 @@ def reAllocation(studentDict: dict, counter):
     for student in studentDict.values():
         position = student.getPrePosition()
         if (position >= 3):
-            preLabel = studnet.getPreAllocation().getLabel()
+            preLabel = student.getPreAllocation()
             counter.addLabel(preLabel)  # add the pre back to avilible list
             resultBackupStudent = None
             resultBackupPosition = None
@@ -192,7 +194,6 @@ def finalCheck(studentDict):
     result = True
     for student in studentDict.values():
         if student.getPreAllocation().isComplete():
-            print(student.getPreAllocation().getLabel())
             continue
         else:
             result = False
@@ -221,27 +222,45 @@ def finalScore(studentDict, supervisorDict):
     'TODO 计算最终得分'
     studentscorelist = []
     supervisorscorelist = []
+    studentscoredic = {10: 0, 8: 0, 6: 0, 4: 0, 2: 0}
+    supervisorscoredic = {}
     for student in studentDict.values():
         studentscorelist.append(student.getScore())
+        studentscoredic[student.getScore()] += 1
     for supervisor in supervisorDict.values():
-        supervisorscorelist.append(supervisor.getWorkLoad())
+        workload = supervisor.getWorkLoad()
+        supervisorscorelist.append(workload)
+        if workload in supervisorscoredic:
+            supervisorscoredic[workload] += 1
+        else:
+            supervisorscoredic[workload] = 1
+
     studentsocrearray = np.array(studentscorelist)
     supervisorscorearray = np.array(supervisorscorelist)
 
     themean = np.mean(studentsocrearray)
     studentVar = np.var(studentsocrearray)
     supervisorVar = np.var(supervisorscorearray)
-    print(themean)
-    print(studentVar)
-    print(supervisorVar)
+    path_result = os.path.join(path, "final_result.txt")
+
+    with open(path_result, "w") as file:
+        file.write("The mean is %s \n" % themean)
+        file.write("The supervisor var is %s\n" % supervisorVar)
+        file.write("The student var is %s \n" % studentVar)
+        file.write("----------------------------------------------------------------------------------\n")
+
+        for load, num in supervisorscoredic.items():
+            file.write("The supervisors who has workload: %s has total: %d\n" % (load, num))
+        for score, thenum in studentscoredic.items():
+            file.write("The students who get %s score has total %d\n" % (score, thenum))
+
+
 
 
 def writeProjectAna(counter):
     path_ana_porject = os.path.join(path, "ana_project.txt")
     with open(path_ana_porject, "w") as file:
         dic = counter.dicOfLabels
-        pndic = {}
-        pdic = {}
         file.write("This file is analysis of project.\n")
         for x in dic:
             primary = x
@@ -250,7 +269,7 @@ def writeProjectAna(counter):
                 for z in dic[x][y]:
                     theTpye = z
                     num = str(dic[x][y][z])
-                    file.write("Primary: %s, Second: %s, Type: %s has total %s\n" %(primary,second,theTpye,num))
+                    file.write("Primary: %s, Second: %s, Type: %s has total %s\n" % (primary, second, theTpye, num))
 
         for p in dic:
             file.write("The %s has sublabel: " % p)
@@ -258,7 +277,7 @@ def writeProjectAna(counter):
                 n = 0
                 for t in dic[p][s]:
                     n += dic[p][s][t]
-                file.write("%s : %d  "% (s, n))
+                file.write("%s : %d  " % (s, n))
             file.write("\n")
         file.write("----------------------------------------------------------------------------------")
 
@@ -296,22 +315,9 @@ if __name__ == "__main__":
     project = initalProject(supervisor, "demo_project.csv")
     counter = countLabel(project)
     writeProjectAna(counter)
-    initalpreference(student, counter, 'demo_preference.csv')
+    initalpreference(student, counter, 'demo_preference01.csv')
     dic = creatprojectDict(project)
     reAllocation(student, counter)
     projectAllocation(student, dic)
     print(finalCheck(student))
     finalScore(student, supervisor)
-
-
-
-
-
-
-
-
-
-
-
-
-

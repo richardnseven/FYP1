@@ -8,6 +8,7 @@ class Student:
         self.pre = P.PreferenceList()
         self.setStudentID(id)
         self.prePosition = None
+        self.preallocation = None
 
         
         
