@@ -126,10 +126,10 @@ def preAllocation(student, counter):
                     student.setPreallocation(theLabel)
                     student.setPrePosition(position)
                     counter.minusLabel(theLabel)
-                    print("the student" + str(student.getID()) + str(theLabel.getLabel()))
+                    # print("the student" + str(student.getID()) + str(theLabel.getLabel()))
                 else:
                     preLabel = counter.findMatch(theLabel)
-                    print("the student" + str(student.getID()) + str(preLabel.getLabel()) + str(position))
+                    # print("the student" + str(student.getID()) + str(preLabel.getLabel()) + str(position))
 
                     student.setPreallocation(preLabel)
                     student.setPrePosition(position)
@@ -241,9 +241,11 @@ def finalScore(studentDict, supervisorDict):
     themean = np.mean(studentsocrearray)
     studentVar = np.var(studentsocrearray)
     supervisorVar = np.var(supervisorscorearray)
+    score = themean * (0.7*(1-studentVar/16) + 0.3*(1 - supervisorVar/6.25))
     path_result = os.path.join(path, "final_result.txt")
 
     with open(path_result, "w") as file:
+        file.write("The final score is %s\n" % score)
         file.write("The mean is %s \n" % themean)
         file.write("The supervisor var is %s\n" % supervisorVar)
         file.write("The student var is %s \n" % studentVar)
@@ -253,8 +255,6 @@ def finalScore(studentDict, supervisorDict):
             file.write("The supervisors who has workload: %s has total: %d\n" % (load, num))
         for score, thenum in studentscoredic.items():
             file.write("The students who get %s score has total %d\n" % (score, thenum))
-
-
 
 
 def writeProjectAna(counter):
@@ -309,15 +309,19 @@ def isMatch(Label, complabel):
     return state
 
 
-if __name__ == "__main__":
-    student = initalStudent("demo_student.csv")
-    supervisor = initalSupervisor("demo_supervisor.csv")
-    project = initalProject(supervisor, "demo_project.csv")
+def mainProcess(student_path, supervisor_path, project_path, preference_path):
+    student = initalStudent(student_path)
+    supervisor = initalSupervisor(supervisor_path)
+    project = initalProject(supervisor, project_path)
     counter = countLabel(project)
     writeProjectAna(counter)
-    initalpreference(student, counter, 'demo_preference01.csv')
+    initalpreference(student, counter, preference_path)
     dic = creatprojectDict(project)
     reAllocation(student, counter)
     projectAllocation(student, dic)
     print(finalCheck(student))
     finalScore(student, supervisor)
+
+
+if __name__ == '__main__':
+    mainProcess("demo_student.csv", "demo_supervisor.csv", "demo_project.csv", "demo_preference01.csv")
