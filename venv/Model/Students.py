@@ -47,6 +47,10 @@ class Student:
     def setProject(self, project):
         self.project = project
 
+
+    def getProject(self):
+        return self.project
+
     def getID(self):
         return self.studentID
 

@@ -10,6 +10,9 @@ class Supervisor:
     def getWorkLoad(self):
         return self.workload
 
+    def getID(self):
+        return self.id
+
 
     def findProject(self, label):
         for project in self.aviprojectlist:

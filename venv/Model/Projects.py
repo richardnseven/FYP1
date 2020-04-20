@@ -13,6 +13,9 @@ class Project:
     def getLabel(self):
         return self.label
 
+    def getID(self):
+        return self.ID
+
 
     def setSupervisor(self, supervisor):
         self.supervisor = supervisor

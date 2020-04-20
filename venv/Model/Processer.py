@@ -110,10 +110,13 @@ def initalpreference(studentDict, counter, doc):  # tested
 def preAllocation(student, counter):
     thepre = student.getPreference().getPreference()
     position = 0
+    if student.getPreAllocation() != None:
+        pre = student.getPreAllocation()
+        counter.addLabel(pre)
+        student.setPreallocation(None)
 
     for theLabel in thepre.values():
-        if student.getPreAllocation() != None:
-            break
+
         position += 1
         status = False
         if theLabel is None or status:
@@ -127,6 +130,7 @@ def preAllocation(student, counter):
                     student.setPrePosition(position)
                     counter.minusLabel(theLabel)
                     # print("the student" + str(student.getID()) + str(theLabel.getLabel()))
+                    break
                 else:
                     preLabel = counter.findMatch(theLabel)
                     # print("the student" + str(student.getID()) + str(preLabel.getLabel()) + str(position))
@@ -134,6 +138,7 @@ def preAllocation(student, counter):
                     student.setPreallocation(preLabel)
                     student.setPrePosition(position)
                     counter.minusLabel(preLabel)
+                    break
 
 
 def reAllocation(studentDict: dict, counter):
@@ -213,10 +218,9 @@ def projectAllocation(studentDcit: dict, dic: dict):
                 if sup.getWorkLoad() < max:
                     max = sup.getWorkLoad()
                     theSupervisor = sup
-
+        dic[labelDict['primary']][labelDict['second']][labelDict['type']][theSupervisor] -= 1
         theProject = theSupervisor.findProject(label)
         student.setProject(theProject)
-
 
 def finalScore(studentDict, supervisorDict):
     'TODO 计算最终得分'
@@ -242,9 +246,9 @@ def finalScore(studentDict, supervisorDict):
     studentVar = np.var(studentsocrearray)
     supervisorVar = np.var(supervisorscorearray)
     score = themean * (0.7*(1-studentVar/16) + 0.3*(1 - supervisorVar/6.25))
-    path_result = os.path.join(path, "final_result.txt")
+    path_score = os.path.join(PORJECT_ROOT, "Result\\final_score.txt")
 
-    with open(path_result, "w") as file:
+    with open(path_score, "w") as file:
         file.write("The final score is %s\n" % score)
         file.write("The mean is %s \n" % themean)
         file.write("The supervisor var is %s\n" % supervisorVar)
@@ -255,10 +259,24 @@ def finalScore(studentDict, supervisorDict):
             file.write("The supervisors who has workload: %s has total: %d\n" % (load, num))
         for score, thenum in studentscoredic.items():
             file.write("The students who get %s score has total %d\n" % (score, thenum))
+    path_result = os.path.join(PORJECT_ROOT,"Result\\output.txt")
+
+    with open(path_result, 'w') as output:
+        for student in studentDict.values():
+            id = student.getID()
+            project = student.getProject()
+            project_id = project.getID()
+            sup = project.getSupervisor()
+            sup_ID = sup.getID()
+            output.write("The student: %s got project: %s hold by supervisor: %s \n" % (id, project_id, sup_ID))
+
+
+
+
 
 
 def writeProjectAna(counter):
-    path_ana_porject = os.path.join(path, "ana_project.txt")
+    path_ana_porject = os.path.join(PORJECT_ROOT, "Result\\ana_project.txt")
     with open(path_ana_porject, "w") as file:
         dic = counter.dicOfLabels
         file.write("This file is analysis of project.\n")
