@@ -11,6 +11,11 @@ projectDict = dict()
 
 PORJECT_ROOT = os.path.dirname(os.path.realpath(os.path.dirname(__file__)))
 path = os.path.join(PORJECT_ROOT, "docs\\")
+glbstudent = dict()
+glbproject = dict()
+glbcounter = dict()
+glbsupervisor = dict()
+
 
 
 def countLabel(projectDict):
@@ -327,19 +332,43 @@ def isMatch(Label, complabel):
     return state
 
 
-def mainProcess(student_path, supervisor_path, project_path, preference_path):
-    student = initalStudent(student_path)
-    supervisor = initalSupervisor(supervisor_path)
-    project = initalProject(supervisor, project_path)
-    counter = countLabel(project)
-    writeProjectAna(counter)
-    initalpreference(student, counter, preference_path)
-    dic = creatprojectDict(project)
-    reAllocation(student, counter)
-    projectAllocation(student, dic)
-    print(finalCheck(student))
-    finalScore(student, supervisor)
+def loadProcess(student_path, supervisor_path, project_path, preference_path):
+    global glbstudent, glbproject, glbcounter, glbsupervisor
+    glbstudent = initalStudent(student_path)
+    glbsupervisor = initalSupervisor(supervisor_path)
+    glbproject = initalProject(glbsupervisor, project_path)
+    glbcounter = countLabel(glbproject)
+    writeProjectAna(glbcounter)
+    initalpreference(glbstudent, glbcounter, preference_path)
 
+def replaceNone(string):
+    if string == "None":
+        string = None
+    return string
+
+def setPreferenct(student,position, primary = None, second = None, type = None):
+    student.setPreference(position, primary, second, type)
+
+
+def mainProcess():
+    global glbstudent, glbproject, glbcounter, glbsupervisor
+    dic = creatprojectDict(glbproject)
+    reAllocation(glbstudent, glbcounter)
+    projectAllocation(glbstudent, dic)
+    print(finalCheck(glbstudent))
+    finalScore(glbstudent, glbsupervisor)
+
+
+def getStudent(ID):
+    global glbstudent
+    return glbstudent[ID]
+
+def getCounter():
+    global glbcounter
+    return glbcounter
 
 if __name__ == '__main__':
-    mainProcess("demo_student.csv", "demo_supervisor.csv", "demo_project.csv", "demo_preference01.csv")
+
+    loadProcess("demo_student.csv", "demo_supervisor.csv", "demo_project.csv", "demo_preference.csv")
+    mainProcess()
+

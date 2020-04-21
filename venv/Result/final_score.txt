@@ -1,0 +1,16 @@
+The final score is 7.653333333333333
+The mean is 10.0 
+The supervisor var is 4.888888888888889
+The student var is 0.0 
+----------------------------------------------------------------------------------
+The supervisors who has workload: 3 has total: 1
+The supervisors who has workload: 4 has total: 1
+The supervisors who has workload: 5 has total: 18
+The supervisors who has workload: 2 has total: 1
+The supervisors who has workload: 1 has total: 1
+The supervisors who has workload: 0 has total: 8
+The students who get 10 score has total 100
+The students who get 8 score has total 0
+The students who get 6 score has total 0
+The students who get 4 score has total 0
+The students who get 2 score has total 0
